@@ -1,15 +1,13 @@
 import { Header } from "@/shared/components/header";
 import { cn } from "@/shared/utils/tailwind";
 import type { Metadata } from "next";
-import { Crimson_Text } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const crimson = Crimson_Text({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-lexend',
-  weight: ['400', '600', '700'],
- });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Fairpay",
@@ -22,10 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-screen min-h-screen">
-      <body className={cn(crimson.className,'w-full h-full')}>
+    <html lang="en" className="min-h-screen" style={{ scrollbarGutter: "stable" }}>
+      <body className={cn(inter.className, "w-full h-full")}>
         <Header />
-        {children}</body>
+        {children}
+      </body>
     </html>
   );
 }
