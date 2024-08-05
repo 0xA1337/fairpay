@@ -8,9 +8,9 @@ export function ExploreCampaignsGrid() {
     <div className="grid grid-cols-2 gap-6">
       {campaigns.map((campaign) => (
         <Link href={`/c/${campaign}`} key={campaign}>
-          <div className="w-full h-[300px] shadow-md rounded-md">
+          <div className="w-full h-[300px] shadow-md rounded-md overflow-hidden">
             <div className="h-2/3">
-              <Skeleton className="w-full h-full" />
+              <Skeleton className="w-full h-full rounded-none" />
             </div>
             <div className="h-1/3"></div>
           </div>
