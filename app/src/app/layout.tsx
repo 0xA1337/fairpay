@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-screen" style={{ scrollbarGutter: "stable" }}>
-      <body className={cn(inter.className, "w-full h-full")}>
+    <html lang="en" className="min-h-screen h-full">
+      <body className={cn(inter.className, "w-full h-full flex flex-col")}>
         <Header />
         {children}
       </body>
