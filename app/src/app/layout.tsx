@@ -1,4 +1,4 @@
-import { Header } from "@/shared/components/header";
+import { Header } from "@/app/_components/header";
 import { cn } from "@/shared/utils/tailwind";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
