@@ -1,4 +1,5 @@
 import { Header } from "@/app/_components/header";
+import { ProvidesQueryClient } from "@/shared/providers/provides-query-client";
 import { cn } from "@/shared/utils/tailwind";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -20,11 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-screen h-full" style={{ scrollbarGutter: "stable" }}>
-      <body className={cn(inter.className, "w-full h-full flex flex-col")}>
-        <Header />
-        {children}
-      </body>
-    </html>
+    <ProvidesQueryClient>
+      <html lang="en" className="min-h-screen h-full" style={{ scrollbarGutter: "stable" }}>
+        <body className={cn(inter.className, "w-full h-full flex flex-col")}>
+          <Header />
+          {children}
+        </body>
+      </html>
+    </ProvidesQueryClient>
   );
 }

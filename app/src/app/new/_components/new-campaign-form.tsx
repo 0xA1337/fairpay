@@ -1,5 +1,6 @@
 "use client";
 
+import { useImageUpload } from "@/app/new/_hooks/use-image-upload";
 import { Button } from "@/shared/components/ui/button";
 import { Calendar } from "@/shared/components/ui/calendar";
 import {
@@ -14,6 +15,7 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { ALLOWED_IMAGE_TYPES } from "@/shared/constants";
 import { cn } from "@/shared/utils/tailwind";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -32,19 +34,41 @@ const formSchema = z.object({
     .optional(),
   endDate: z.date().optional(),
   image: z
-    .any()
+    .instanceof(File)
     .optional()
     .refine(
-      (file) => !file || file.size <= 10 * 1024 * 1024, // 10 MB
-      "Image must be less than 10 MB."
-    )
-    .refine(
-      (file) => !file || ["image/jpeg", "image/jpg", "image/png"].includes(file.type),
-      "Only .jpg, .jpeg, and .png formats are allowed."
+      (file) => {
+        console.log("pl^pl^pl^pl^pl^pl^pl");
+        console.log(file);
+        return file && file.size <= 10 * 1024 * 1024;
+      },
+      { message: "File size must be below 10MB." }
     ),
 });
 
 export function NewCampaignForm() {
+  const {
+    mutate: uploadImageToIpfs,
+    isPending: imageUploadIsLoading,
+    isError: imageUploadIsError,
+    isSuccess: imageUploadIsSuccess,
+    data: imageUploadResult,
+    error: imageUploadError,
+  } = useImageUpload();
+
+  console.log(
+    "Upload status | isPending:",
+    imageUploadIsLoading,
+    "isError:",
+    imageUploadIsError,
+    "isSuccess:",
+    imageUploadIsSuccess,
+    "data:",
+    imageUploadResult,
+    "error:",
+    imageUploadError
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,6 +82,8 @@ export function NewCampaignForm() {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
   };
+
+  const imageField = form.watch("image");
 
   return (
     <Form {...form}>
@@ -97,13 +123,35 @@ export function NewCampaignForm() {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>{"Image (optional)"}</FormLabel>
               <FormControl>
                 <div className="flex items-center gap-x-2">
-                  <Input placeholder="Goal" {...field} type="file" />
-                  <Button type="button" variant={"secondary"}>
+                  <Input
+                    {...fieldProps}
+                    placeholder="Image"
+                    type="file"
+                    accept={ALLOWED_IMAGE_TYPES.join(",")}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      onChange(file);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant={"secondary"}
+                    disabled={imageUploadIsSuccess || !imageField}
+                    loading={imageUploadIsLoading}
+                    className={cn(imageUploadIsSuccess && "bg-green-200")}
+                    onClick={() => {
+                      if (!imageField) return;
+                      const formData = new FormData();
+                      formData.append("file", imageField);
+                      uploadImageToIpfs(formData);
+                    }}
+                  >
                     Confirm
                   </Button>
                 </div>
