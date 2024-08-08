@@ -1,6 +1,10 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { defineConfig } from "@wagmi/cli";
 import { actions, react } from "@wagmi/cli/plugins";
 import { Address, zeroAddress } from "viem";
+
 import { fairpayAbi } from "../abis/Fairpay";
 
 export default defineConfig({
@@ -9,7 +13,7 @@ export default defineConfig({
     {
       name: "Fairpay",
       abi: fairpayAbi,
-      address: (process.env.FAIRPAY_ADDRESS || zeroAddress) as Address,
+      address: (process.env.FAIRPAY_ADDRESS ?? zeroAddress) as Address,
     },
   ],
   plugins: [react(), actions()],
