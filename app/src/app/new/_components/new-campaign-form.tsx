@@ -36,17 +36,14 @@ const formSchema = z.object({
   image: z
     .instanceof(File)
     .optional()
-    .refine(
-      (file) => {
-        console.log("pl^pl^pl^pl^pl^pl^pl");
-        console.log(file);
-        return file && file.size <= 10 * 1024 * 1024;
-      },
-      { message: "File size must be below 10MB." }
-    ),
+    .refine((file) => file && file.size <= 10 * 1024 * 1024, {
+      message: "File size must be below 10MB.",
+    }),
 });
 
 export function NewCampaignForm() {
+  // const { address } = useAccount();
+
   const {
     mutate: uploadImageToIpfs,
     isPending: imageUploadIsLoading,
@@ -55,19 +52,6 @@ export function NewCampaignForm() {
     data: imageUploadResult,
     error: imageUploadError,
   } = useImageUpload();
-
-  console.log(
-    "Upload status | isPending:",
-    imageUploadIsLoading,
-    "isError:",
-    imageUploadIsError,
-    "isSuccess:",
-    imageUploadIsSuccess,
-    "data:",
-    imageUploadResult,
-    "error:",
-    imageUploadError
-  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -81,6 +65,14 @@ export function NewCampaignForm() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+
+    if (form.watch("image") && !imageUploadIsSuccess) {
+      form.setError("image", {
+        type: "manual",
+        message: "Image is not confirmed.",
+      });
+      return;
+    }
   };
 
   const imageField = form.watch("image");
