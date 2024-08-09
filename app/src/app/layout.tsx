@@ -10,6 +10,7 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
+  display: "swap",
   variable: "--font-inter",
 });
 
@@ -34,8 +35,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-screen h-full" style={{ scrollbarGutter: "stable" }}>
-      <body className={cn(inter.className, "w-full h-full flex flex-col")}>
+    <html
+      lang="en"
+      className={cn(inter.variable, "min-h-screen h-full")}
+      style={{ scrollbarGutter: "stable" }}
+    >
+      <body className={"w-full h-full flex flex-col"}>
         <OnchainProviderNoSSR>
           <Header />
           {children}
