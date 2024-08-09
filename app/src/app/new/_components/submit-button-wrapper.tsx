@@ -2,6 +2,7 @@
 
 import LoginButton from "@/app/_components/login-button";
 import { fairpayAbi } from "@/core/abis/Fairpay";
+import { FormLabel } from "@/shared/components/ui/form";
 import { APP_CHAIN } from "@/shared/constants";
 import { fairpayAddress } from "@/shared/generated";
 import {
@@ -9,9 +10,10 @@ import {
   TransactionButton,
   TransactionError,
   TransactionResponse,
-  TransactionStatus,
-  TransactionStatusAction,
-  TransactionStatusLabel,
+  TransactionToast,
+  TransactionToastAction,
+  TransactionToastIcon,
+  TransactionToastLabel,
 } from "@coinbase/onchainkit/transaction";
 import { Address, ContractFunctionParameters } from "viem";
 import { useAccount } from "wagmi";
@@ -34,7 +36,6 @@ export function SubmitButtonWrapper({
   endDate,
 }: SubmitButtonWrapperProps) {
   const { address } = useAccount();
-  const mintTo = address;
 
   const finalGoal = goal ? BigInt(goal) : undefined;
   const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : undefined;
@@ -44,7 +45,7 @@ export function SubmitButtonWrapper({
       address: fairpayAddress,
       abi: fairpayAbi,
       functionName: "createCampaign",
-      args: [title, description, undefined, recipient, finalGoal, finalEndDate],
+      args: [title, description, bannerImage, recipient, finalGoal, finalEndDate],
     },
   ] as unknown as ContractFunctionParameters[];
 
@@ -57,8 +58,13 @@ export function SubmitButtonWrapper({
   };
 
   return (
-    <div className="flex w-[450px]">
-      {!address && <LoginButton />}
+    <div className="flex flex-col gap-y-2">
+      {!address && (
+        <>
+          <FormLabel className="invisible">Submit</FormLabel>
+          <LoginButton />
+        </>
+      )}
       {address && (
         <Transaction
           address={address}
@@ -68,14 +74,17 @@ export function SubmitButtonWrapper({
           onError={handleError}
           onSuccess={handleSuccess}
         >
+          <FormLabel className="invisible">Submit</FormLabel>
+
           <TransactionButton
-            className="mt-0 mr-auto ml-auto w-[450px] max-w-full text-[white]"
-            text="Collect"
+            className="h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"
+            text="Create"
           />
-          <TransactionStatus>
-            <TransactionStatusLabel />
-            <TransactionStatusAction />
-          </TransactionStatus>
+          <TransactionToast>
+            <TransactionToastIcon />
+            <TransactionToastLabel />
+            <TransactionToastAction />
+          </TransactionToast>
         </Transaction>
       )}
     </div>

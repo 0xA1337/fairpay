@@ -1,5 +1,5 @@
 export type PinataFileUploadRes = {
-  IpfsHash: number;
+  IpfsHash: string;
   PinSize: number;
   Timestamp: string;
   isDuplicate: boolean;

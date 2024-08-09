@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/shared/utils/tailwind";
-import { Address, Avatar, EthBalance, Identity, Name } from "@coinbase/onchainkit/identity";
+import { Avatar, Identity, Name } from "@coinbase/onchainkit/identity";
 import {
   ConnectWallet,
   Wallet,
@@ -31,14 +31,12 @@ export default function WalletWrapper({
           )}
         >
           <Avatar className="h-6 w-6" />
-          <Name />
+          <div className="text-secondary-foreground font-medium">Account</div>
         </ConnectWallet>
-        <WalletDropdown>
-          <Identity className={cn("px-4 pt-3 pb-2")} hasCopyAddressOnClick={true}>
+        <WalletDropdown className="shadow-md pb-0">
+          <Identity className={cn("px-4 pt-3 pb-2")}>
             <Avatar />
             <Name />
-            <Address />
-            <EthBalance />
           </Identity>
 
           <WalletDropdownDisconnect />

@@ -3,6 +3,7 @@ import path from "path";
 
 import { ALLOWED_IMAGE_TYPES } from "@/shared/constants";
 import { PinataFileUploadRes } from "@/shared/types/ipfs";
+import { buildIpfsUrl } from "@/shared/utils/ipfs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,9 +37,9 @@ export async function POST(request: NextRequest) {
     });
 
     const data: PinataFileUploadRes = await result.json();
-    const url = `https://${process.env.IPFS_GATEWAY}/ipfs/${data.IpfsHash}`;
 
-    return NextResponse.json({ url }, { status: 200 });
+    const url = buildIpfsUrl(data.IpfsHash);
+    return NextResponse.json({ hash: data.IpfsHash, url }, { status: 200 });
   } catch (error) {
     console.error("Error uploading image:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

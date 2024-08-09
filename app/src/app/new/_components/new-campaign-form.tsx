@@ -35,12 +35,7 @@ const formSchema = z.object({
     .max(5_000_000, { message: "The target amount cannot exceed 5,000,000 USD." })
     .optional(),
   endDate: z.date().optional(),
-  image: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => file && file.size <= 10 * 1024 * 1024, {
-      message: "File size must be below 10MB.",
-    }),
+  image: z.instanceof(File).optional(),
 });
 
 export function NewCampaignForm() {
@@ -83,17 +78,53 @@ export function NewCampaignForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 w-full gap-4">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Title" {...field} />
               </FormControl>
               <FormDescription>A short, descriptive title for your campaign.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field: { value, onChange, ...fieldProps } }) => (
+            <FormItem className="col-span-1 row-span-2 flex flex-col h-full">
+              <FormLabel>{"Image (optional)"}</FormLabel>
+              <FormControl>
+                <div className="flex flex-col flex-grow gap-x-2">
+                  <Input
+                    {...fieldProps}
+                    placeholder="Image"
+                    type="file"
+                    accept={ALLOWED_IMAGE_TYPES.join(",")}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 10 * 1024 * 1024) {
+                        form.setError("image", {
+                          type: "manual",
+                          message: "File size must be below 10MB.",
+                        });
+                        return;
+                      }
+                      onChange(file);
+                      const formData = new FormData();
+                      formData.append("file", file);
+                      uploadImageToIpfs(formData);
+                    }}
+                    className="flex-grow text-center border-dashed border-2 bg-neutral-50"
+                  />
+                </div>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -118,82 +149,26 @@ export function NewCampaignForm() {
         />
         <FormField
           control={form.control}
-          name="image"
-          render={({ field: { value, onChange, ...fieldProps } }) => (
-            <FormItem>
-              <FormLabel>{"Image (optional)"}</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-x-2">
-                  <Input
-                    {...fieldProps}
-                    placeholder="Image"
-                    type="file"
-                    accept={ALLOWED_IMAGE_TYPES.join(",")}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      onChange(file);
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant={"secondary"}
-                    disabled={imageUploadIsSuccess || !imageField}
-                    loading={imageUploadIsLoading}
-                    className={cn(imageUploadIsSuccess && "bg-green-200")}
-                    onClick={() => {
-                      if (!imageField) return;
-                      const formData = new FormData();
-                      formData.append("file", imageField);
-                      uploadImageToIpfs(formData);
-                    }}
-                  >
-                    Confirm
-                  </Button>
-                </div>
-              </FormControl>
-              <FormDescription>Chose something that represents your campaign. </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="recipient"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Recipient</FormLabel>
-              <FormControl>
-                <Input placeholder="0x..." {...field} />
-              </FormControl>
-              <FormDescription>A short, descriptive title for your campaign.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="goal"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col col-span-1">
               <FormLabel>{"Goal (optional)"}</FormLabel>
               <FormControl>
                 <div className="flex gap-x-2 items-center">
                   <Input placeholder="Goal" {...field} className="flex-grow" />
-                  <span>USD</span>
+                  <span className="select-none">USD</span>
                 </div>
               </FormControl>
-              <FormDescription>A short, descriptive title for your campaign.</FormDescription>
+              <FormDescription>The target amount (in USD) you want to raise.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="endDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col col-span-1">
               <FormLabel>{"End date (optional)"}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -225,11 +200,24 @@ export function NewCampaignForm() {
             </FormItem>
           )}
         />
-        {/* <Button type="submit">Create campaign</Button> */}
+        <FormField
+          control={form.control}
+          name="recipient"
+          render={({ field }) => (
+            <FormItem className="col-span-1 flex flex-col">
+              <FormLabel>Recipient</FormLabel>
+              <FormControl>
+                <Input placeholder="0x..." {...field} />
+              </FormControl>
+              <FormDescription>A short, descriptive title for your campaign.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <SubmitButtonWrapper
           title={formValues.title}
           description={formValues.description}
-          bannerImage={imageUploadResult?.url}
+          bannerImage={imageUploadResult?.hash}
           recipient={formValues.recipient as Address}
           goal={formValues.goal}
           endDate={formValues.endDate}
