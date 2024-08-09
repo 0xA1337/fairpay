@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "predev": "npm run wagmi:generate",
+    "dev": "next dev",
+    "prebuild": "npm run wagmi:generate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
