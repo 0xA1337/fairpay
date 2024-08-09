@@ -167,14 +167,12 @@ export function NewCampaignForm() {
                     step={10}
                     onChange={(e) => {
                       const value = e.target.value;
-                      console.log("joiajaoija");
                       if (value === "") {
                         onChange(undefined);
                       } else if (/^\d*$/g.test(value)) {
                         console.log(value);
                         onChange(value);
                       }
-                      console.log("eeeee");
                     }}
                   />
                   <span className="select-none">USD</span>
