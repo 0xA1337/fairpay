@@ -76,6 +76,8 @@ export function NewCampaignForm() {
 
   const formValues = form.getValues();
 
+  console.log(">", formValues.goal);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 w-full gap-4">
@@ -150,12 +152,31 @@ export function NewCampaignForm() {
         <FormField
           control={form.control}
           name="goal"
-          render={({ field }) => (
-            <FormItem className="flex flex-col col-span-1">
+          render={({ field: { onChange, ...fieldProps } }) => (
+            <FormItem className="flex flex-col col-span-1 mt-5">
               <FormLabel>{"Goal (optional)"}</FormLabel>
               <FormControl>
                 <div className="flex gap-x-2 items-center">
-                  <Input placeholder="Goal" {...field} className="flex-grow" />
+                  <Input
+                    placeholder="Goal"
+                    {...fieldProps}
+                    className="flex-grow"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    type="number"
+                    step={10}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      console.log("joiajaoija");
+                      if (value === "") {
+                        onChange(undefined);
+                      } else if (/^\d*$/g.test(value)) {
+                        console.log(value);
+                        onChange(value);
+                      }
+                      console.log("eeeee");
+                    }}
+                  />
                   <span className="select-none">USD</span>
                 </div>
               </FormControl>
@@ -168,7 +189,7 @@ export function NewCampaignForm() {
           control={form.control}
           name="endDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col col-span-1">
+            <FormItem className="flex flex-col col-span-1 mt-5">
               <FormLabel>{"End date (optional)"}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -207,7 +228,7 @@ export function NewCampaignForm() {
             <FormItem className="col-span-1 flex flex-col">
               <FormLabel>Recipient</FormLabel>
               <FormControl>
-                <Input placeholder="0x..." {...field} />
+                <Input {...field} placeholder="0x..." autoComplete="off" />
               </FormControl>
               <FormDescription>A short, descriptive title for your campaign.</FormDescription>
               <FormMessage />
