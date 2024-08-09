@@ -14,7 +14,8 @@ import {
   TransactionToastIcon,
   TransactionToastLabel,
 } from "@coinbase/onchainkit/transaction";
-import { Address, ContractFunctionParameters } from "viem";
+import { useRouter } from "next/navigation";
+import { Address, ContractFunctionParameters, parseEventLogs } from "viem";
 import { useAccount } from "wagmi";
 import { LoginButton } from "./login-button";
 
@@ -36,6 +37,7 @@ export function SubmitButtonWrapper({
   endDate,
 }: SubmitButtonWrapperProps) {
   const { address } = useAccount();
+  const router = useRouter();
 
   const finalGoal = goal ? BigInt(goal) : undefined;
   const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : undefined;
@@ -54,7 +56,14 @@ export function SubmitButtonWrapper({
   };
 
   const handleSuccess = (response: TransactionResponse) => {
-    console.log("Transaction successful", response);
+    const firstReceipt = response.transactionReceipts[0];
+    const parsedLogs = parseEventLogs({
+      logs: firstReceipt.logs,
+      abi: fairpayAbi,
+      eventName: "CampaignCreated",
+    });
+    const campaignId = parsedLogs[0].args.id;
+    router.push(`/c/${campaignId}`);
   };
 
   return (
