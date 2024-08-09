@@ -1,6 +1,5 @@
 "use client";
 
-import LoginButton from "@/app/_components/login-button";
 import { fairpayAbi } from "@/core/abis/Fairpay";
 import { FormLabel } from "@/shared/components/ui/form";
 import { APP_CHAIN } from "@/shared/constants";
@@ -17,6 +16,7 @@ import {
 } from "@coinbase/onchainkit/transaction";
 import { Address, ContractFunctionParameters } from "viem";
 import { useAccount } from "wagmi";
+import { LoginButton } from "./login-button";
 
 interface SubmitButtonWrapperProps {
   title: string;
@@ -62,7 +62,7 @@ export function SubmitButtonWrapper({
       {!address && (
         <>
           <FormLabel className="invisible">Submit</FormLabel>
-          <LoginButton />
+          <LoginButton text="Log in to create" />
         </>
       )}
       {address && (
