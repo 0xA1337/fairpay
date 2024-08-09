@@ -21,7 +21,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { Address } from "viem";
 import { z } from "zod";
+import { SubmitButtonWrapper } from "./submit-button-wrapper";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters long." }),
@@ -76,6 +78,8 @@ export function NewCampaignForm() {
   };
 
   const imageField = form.watch("image");
+
+  const formValues = form.getValues();
 
   return (
     <Form {...form}>
@@ -221,7 +225,15 @@ export function NewCampaignForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Create campaign</Button>
+        {/* <Button type="submit">Create campaign</Button> */}
+        <SubmitButtonWrapper
+          title={formValues.title}
+          description={formValues.description}
+          bannerImage={imageUploadResult?.url}
+          recipient={formValues.recipient as Address}
+          goal={formValues.goal}
+          endDate={formValues.endDate}
+        />
       </form>
     </Form>
   );
