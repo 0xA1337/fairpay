@@ -24,7 +24,13 @@ export async function CampaignPanel(props: { id: number }) {
     <section className="space-y-5">
       <div className="rounded-lg overflow-hidden border border-border/40">
         <div className="w-full h-[500px] relative overflow-hidden">
-          <Image src={imageUrl} alt="" layout="fill" objectFit="cover" />
+          <Image
+            src={imageUrl}
+            alt=""
+            layout="fill"
+            objectFit="cover"
+            className="backdrop-brightness-100 brightness-95"
+          />
           <div className="absolute left-4 right-4 bottom-4 h-10 bg-white/80 backdrop-blur-md rounded-md ">
             {campaign.goal} -- {campaign.totalRaised}
           </div>
