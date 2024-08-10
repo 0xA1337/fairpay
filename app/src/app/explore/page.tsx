@@ -4,7 +4,7 @@ export default function ExplorePage() {
   const X = 1234; // TODO: Fetch from Subgraph
 
   return (
-    <main className="mx-auto w-full max-w-5xl py-8 space-y-8">
+    <main className="mx-auto w-full max-w-4xl py-8 space-y-8">
       <div className="space-y-1">
         <h1 className="text-3xl font-bold">Uncover the Perfect Campaign for You</h1>
         <p className="text-neutral-700">
