@@ -6,11 +6,21 @@ import { buildWarpcastIntentUrl, buildXIntentUrl } from "@/shared/utils/social";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
+async function fetchCampaign(id: number) {
+  try {
+    return await readFairpayGetCampaign(serverWagmiConfig, {
+      args: [BigInt(id)],
+    });
+  } catch (error) {
+    console.error(error);
+    notFound();
+  }
+}
 
 export async function CampaignPanel(props: { id: number }) {
-  const campaign = await readFairpayGetCampaign(serverWagmiConfig, {
-    args: [BigInt(props.id)],
-  });
+  const campaign = await fetchCampaign(props.id);
 
   const imageUrl = buildIpfsUrl(campaign.bannerImage);
   const headersList = headers();
