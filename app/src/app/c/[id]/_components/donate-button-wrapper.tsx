@@ -2,9 +2,8 @@
 
 import { fairpayAbi } from "@/core/abis/Fairpay";
 import { LoginButton } from "@/shared/components/login-button";
-import { FormLabel } from "@/shared/components/ui/form";
 import { APP_CHAIN } from "@/shared/constants";
-import { fairpayAddress } from "@/shared/generated";
+import { fairpayAddress, usdcAbi, usdcAddress } from "@/shared/generated";
 import {
   Transaction,
   TransactionButton,
@@ -16,38 +15,31 @@ import {
   TransactionToastLabel,
 } from "@coinbase/onchainkit/transaction";
 import { useRouter } from "next/navigation";
-import { Address, ContractFunctionParameters, parseEventLogs } from "viem";
+import { ContractFunctionParameters, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
 interface SubmitButtonWrapperProps {
-  title: string;
-  description: string;
-  bannerImage?: string;
-  recipient: Address;
-  goal?: number;
-  endDate?: Date;
+  campaignId: number;
+  amountUsdc: number;
 }
 
-export function SubmitButtonWrapper({
-  title,
-  description,
-  bannerImage,
-  recipient,
-  goal,
-  endDate,
-}: SubmitButtonWrapperProps) {
+export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrapperProps) {
   const { address } = useAccount();
   const router = useRouter();
-
-  const finalGoal = goal ? BigInt(goal) : undefined;
-  const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : undefined;
+  const finalAmount = parseUnits(amountUsdc.toString(), 6);
 
   const contracts = [
     {
+      address: usdcAddress,
+      abi: usdcAbi,
+      functionName: "approve",
+      args: [fairpayAddress, finalAmount],
+    },
+    {
       address: fairpayAddress,
       abi: fairpayAbi,
-      functionName: "createCampaign",
-      args: [title, description, bannerImage, recipient, finalGoal, finalEndDate],
+      functionName: "donate",
+      args: [BigInt(campaignId), finalAmount],
     },
   ] as unknown as ContractFunctionParameters[];
 
@@ -56,22 +48,14 @@ export function SubmitButtonWrapper({
   };
 
   const handleSuccess = (response: TransactionResponse) => {
-    const firstReceipt = response.transactionReceipts[0];
-    const parsedLogs = parseEventLogs({
-      logs: firstReceipt.logs,
-      abi: fairpayAbi,
-      eventName: "CampaignCreated",
-    });
-    const campaignId = parsedLogs[0].args.id;
-    router.push(`/c/${campaignId}`);
+    console.log("Transaction success:", response);
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <>
       {!address && (
         <>
-          <FormLabel className="invisible">Submit</FormLabel>
-          <LoginButton text="Log in to create" />
+          <LoginButton text="Log in to donate" />
         </>
       )}
       {address && (
@@ -83,11 +67,9 @@ export function SubmitButtonWrapper({
           onError={handleError}
           onSuccess={handleSuccess}
         >
-          <FormLabel className="invisible">Submit</FormLabel>
-
           <TransactionButton
             className="h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"
-            text="Create"
+            text="Donate"
           />
           <TransactionToast>
             <TransactionToastIcon />
@@ -96,6 +78,6 @@ export function SubmitButtonWrapper({
           </TransactionToast>
         </Transaction>
       )}
-    </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectWallet } from "@coinbase/onchainkit/wallet";
-import { cn } from "../../../shared/utils/tailwind";
+import { cn } from "../utils/tailwind";
 
 export function LoginButton(props: { text?: string }) {
   return (
