@@ -7,6 +7,7 @@ import {
   Wallet,
   WalletDropdown,
   WalletDropdownDisconnect,
+  WalletDropdownLink,
 } from "@coinbase/onchainkit/wallet";
 
 type WalletWrapperParams = {
@@ -38,8 +39,10 @@ export default function WalletWrapper({
             <Avatar />
             <Name />
           </Identity>
-
-          <WalletDropdownDisconnect />
+          <WalletDropdownLink icon="wallet" href="https://wallet.coinbase.com" className="py-2">
+            Go to wallet dashboard
+          </WalletDropdownLink>
+          <WalletDropdownDisconnect className="py-2" />
         </WalletDropdown>
       </Wallet>
     </>
