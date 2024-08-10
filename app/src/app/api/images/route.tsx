@@ -5,6 +5,8 @@ import { ALLOWED_IMAGE_TYPES } from "@/shared/constants";
 import { PinataFileUploadRes } from "@/shared/types/ipfs";
 import { buildIpfsUrl } from "@/shared/utils/ipfs";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     console.log("===+> received");
