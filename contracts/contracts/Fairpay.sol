@@ -2,10 +2,13 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract Fairpay {
+contract Fairpay is Ownable {
     IERC20 public immutable usdcToken;
     uint256 private currentCampaignId;
+    address public feeCollector;
 
     struct Campaign {
         uint256 id;
@@ -31,11 +34,21 @@ contract Fairpay {
     event DonationMade(
         uint256 indexed campaignId,
         address indexed donor,
-        uint256 amount
+        uint256 amount,
+        uint256 fee
     );
 
-    constructor(address _usdcToken) {
+    event FeeCollectorUpdated(address indexed newFeeCollector);
+
+    constructor(address _usdcToken, address _feeCollector) Ownable(msg.sender) {
         usdcToken = IERC20(_usdcToken);
+        feeCollector = _feeCollector;
+    }
+
+    function setFeeCollector(address _newFeeCollector) external onlyOwner {
+        require(_newFeeCollector != address(0), "Invalid fee collector address");
+        feeCollector = _newFeeCollector;
+        emit FeeCollectorUpdated(_newFeeCollector);
     }
 
     function createCampaign(
@@ -48,7 +61,7 @@ contract Fairpay {
     ) external returns (uint256) {
         require(_recipient != address(0), "Invalid recipient address");
         
-        currentCampaignId += 1;
+        currentCampaignId++;
         campaigns[currentCampaignId] = Campaign({
             id: currentCampaignId,
             title: _title,
@@ -74,11 +87,28 @@ contract Fairpay {
             require(block.timestamp <= campaign.endDate, "Campaign has ended");
         }
 
-        require(usdcToken.transferFrom(msg.sender, campaign.recipient, _amount), "USDC transfer failed");
+        uint256 fee = calculateFee(_amount);
+        uint256 amountAfterFee = _amount - fee;
 
-        campaign.totalRaised += _amount;
+        require(usdcToken.transferFrom(msg.sender, campaign.recipient, amountAfterFee), "USDC transfer to recipient failed");
+        
+        if (fee > 0) {
+            require(usdcToken.transferFrom(msg.sender, feeCollector, fee), "USDC fee transfer failed");
+        }
 
-        emit DonationMade(_campaignId, msg.sender, _amount);
+        campaign.totalRaised += amountAfterFee;
+
+        emit DonationMade(_campaignId, msg.sender, _amount, fee);
+    }
+
+    function calculateFee(uint256 _amount) public pure returns (uint256) {
+        if (_amount < 100e6) {
+            return 0;
+        } else if (_amount <= 10_000e6) {
+            return (_amount * 5) / 100;
+        } else {
+            return (_amount * 15) / 1000;
+        }
     }
 
     function getCampaign(uint256 _campaignId) external view returns (Campaign memory) {
