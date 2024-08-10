@@ -1,0 +1,24 @@
+{
+  "name": "fairpay-data/1.0.0",
+  "version": "1",
+  "abis": {
+    "fairpay": {
+      "path": "./abis/fairpay.json"
+    }
+  },
+  "instances": [
+    {
+      "abi": "fairpay",
+      "address": "0xcbd430b697f7a68cc2f8d654cb1432db6803f8fc",
+      "startBlock": 13775841,
+      "chain": "base-sepolia"
+    },
+    {
+      "abi": "fairpay",
+      "address": "0xa921ba6108ae87aea29a2045846e29480ff4a42e",
+      "startBlock": 18265384,
+      "chain": "base"
+    }
+  ],
+  "enableCallHandlers": false
+}
