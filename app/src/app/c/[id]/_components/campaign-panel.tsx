@@ -49,7 +49,9 @@ export async function CampaignPanel(props: { id: number }) {
           <h1 className="text-3xl font-bold">{campaign.title}</h1>
           <p>{campaign.description}</p>
           <div className="flex justify-between items-center mt-4">
-            <Button>Donate</Button>
+            <Button asChild>
+              <Link href={`/c/${props.id}?mode=donate`}>Donate</Link>
+            </Button>
 
             <div className="space-x-2">
               <Button variant={"x"} asChild>
