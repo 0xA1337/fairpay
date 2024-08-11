@@ -56,8 +56,9 @@ export default function Home() {
                   Empower Your Sports Journey
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our platform provides the tools and support you need to turn your sports dreams
-                  into reality. From fundraising to networking, we've got you covered.
+                  {
+                    "Our platform provides the tools and support you need to turn your sports dreams into reality. From fundraising to networking, we've got you covered."
+                  }
                 </p>
               </div>
             </div>
@@ -145,9 +146,9 @@ export default function Home() {
                   Why Choose Us?
                 </div>
                 <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
-                  Our platform is designed to provide the support and resources you need to turn
-                  your sports dreams into reality. With a focus on community and mentorship, Fairpay
-                  isn't just a crowdfunding platform — it's a sports community.
+                  {
+                    "Our platform is designed to provide the support and resources you need to turn your sports dreams into reality. With a focus on community and mentorship, Fairpay isn't just a crowdfunding platform — it's a sports community."
+                  }
                 </p>
                 <Link
                   href="/about"
