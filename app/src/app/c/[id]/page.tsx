@@ -51,6 +51,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     notFound();
   }
 }
+export const dynamic = "force-dynamic";
 
 export default function CampaignPage({
   params,

@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { CampaignsGrid } from "./_components/campaigns-grid";
 import { SkeletonCampaignsGrid } from "./_components/skeleton-campaigns-grid";
 
+export const dynamic = "force-dynamic";
+
 export default function ExplorePage() {
   return (
     <main className="mx-auto w-full max-w-4xl p-4 lg:py-8 space-y-8">
