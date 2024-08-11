@@ -78,7 +78,7 @@ export async function CampaignPanel(props: { id: number }) {
 
   return (
     <section className="space-y-5">
-      <div className="rounded-lg overflow-hidden border border-border/40">
+      <div className="rounded-lg overflow-hidden border border-border/80">
         <div className="w-full h-[500px] relative overflow-hidden">
           <Image
             src={imageUrl}
@@ -129,7 +129,7 @@ export async function CampaignPanel(props: { id: number }) {
           </div>
         </div>
       </div>
-      <div className="p-6 rounded-lg overflow-hidden border border-border/40">
+      <div className="p-6 rounded-lg overflow-hidden border border-border/80">
         <h2 className="text-xl font-semibold">Latest donations</h2>
         <div className="space-y-4 mt-4">
           {latestDonations.map((donation) => (

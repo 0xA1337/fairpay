@@ -23,8 +23,8 @@ export async function DonatePanel(props: { id: number }) {
   const imageUrl = buildIpfsUrl(campaign.bannerImage);
 
   return (
-    <section className="rounded-lg overflow-hidden border border-border/60">
-      <div className="p-6 border-b border-border/60">
+    <section className="rounded-lg overflow-hidden border border-border/80">
+      <div className="p-6 border-b border-border/80">
         <h1 className="text-3xl font-bold">Donate to “{campaign.title}”</h1>
         <p>Make a one-time donation to support this campaign.</p>
       </div>

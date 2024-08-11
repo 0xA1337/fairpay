@@ -3,7 +3,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 export function SkeletonCampaignPanel() {
   return (
     <section className="space-y-5">
-      <div className="rounded-lg overflow-hidden border border-border/40">
+      <div className="rounded-lg overflow-hidden border border-border/80">
         <div className="w-full h-[400px]">
           <Skeleton className="w-full h-full rounded-none" />
         </div>
@@ -13,7 +13,7 @@ export function SkeletonCampaignPanel() {
           <Skeleton className="h-4 w-1/3 rounded-tr-none" />
         </div>
       </div>
-      <div className="p-6 rounded-lg overflow-hidden border border-border/40">
+      <div className="p-6 rounded-lg overflow-hidden border border-border/80">
         <Skeleton className="h-5 w-2/5 mb-2" />
         <Skeleton className="h-14 w-full" />
       </div>

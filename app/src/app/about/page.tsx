@@ -3,7 +3,7 @@ export default function AboutPage() {
     <main className="mx-auto w-full max-w-4xl p-4 md:py-8 md:px-0">
       <h1 className="text-3xl font-bold">About Fairpay</h1>
       <section className="space-y-4 mt-4">
-        <div className="p-2 md:p-4 border-t border-border/60">
+        <div className="p-2 md:p-4 border-t border-border/80">
           <h2 className="text-2xl font-semibold">What is Fairpay?</h2>
           <p>
             Fairpay is a decentralized crowdfunding platform that allows athletes to raise funds to
@@ -14,7 +14,7 @@ export default function AboutPage() {
             communicate about their campaigns and be more than just a faceless wallet address.
           </p>
         </div>
-        <div className="p-2 md:p-4 border-t border-border/60">
+        <div className="p-2 md:p-4 border-t border-border/80">
           <h2 className="text-2xl font-semibold">What is Farcaster?</h2>
           <p>
             Farcaster is an innovative, sufficiently decentralized protocol for social networking.
@@ -26,7 +26,7 @@ export default function AboutPage() {
             funds, through their public custody/verified Farcaster wallet.
           </p>
         </div>
-        <div className="p-2 md:p-4 border-t border-border/60">
+        <div className="p-2 md:p-4 border-t border-border/80">
           <h2 className="text-2xl font-semibold">What is a Smart Wallet?</h2>
           <p>
             Fairpay&apos;s goal is to make Web3 feel like Web2 on steroids. To achieve this, we have
@@ -37,7 +37,7 @@ export default function AboutPage() {
             do complex operations.
           </p>
         </div>
-        <div className="p-2 md:p-4 border-t border-border/60">
+        <div className="p-2 md:p-4 border-t border-border/80">
           <h2 className="text-2xl font-semibold">Why do it onchain?</h2>
           <p>
             Building Fairpay onchain was not a second thought, it was actually the spark that lit
