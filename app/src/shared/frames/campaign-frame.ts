@@ -1,5 +1,4 @@
 import { getFrameMetadata } from "@coinbase/onchainkit/frame";
-import { buildIpfsUrl } from "../utils/ipfs";
 import { buildWarpcastIntentUrl } from "../utils/social";
 
 export const getCampaignFrame = (params: { id: number; bannerImage: string }) => {
@@ -23,7 +22,7 @@ export const getCampaignFrame = (params: { id: number; bannerImage: string }) =>
         action: "post",
       },
     ],
-    image: buildIpfsUrl(params.bannerImage),
+    image: params.bannerImage,
     postUrl: `${process.env.NEXT_PUBLIC_HOST}/api/frames/approve?id=${params.id}&bannerImage=${params.bannerImage}`,
   });
 };
