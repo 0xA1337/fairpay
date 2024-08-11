@@ -1,5 +1,4 @@
 import { getFrameMetadata } from "@coinbase/onchainkit/frame";
-import { DonationFrameState } from "../types/frames";
 import { buildWarpcastIntentUrl } from "../utils/social";
 
 export const getCampaignFrame = (params: { id: number; bannerImage: string }) => {
@@ -25,10 +24,6 @@ export const getCampaignFrame = (params: { id: number; bannerImage: string }) =>
     ],
     image:
       "https://aqua-wooden-kite-259.mypinata.cloud/ipfs/QmahtmC5tLALkxbwDCfvXCgyFvJd9UyZdDEgtRkDwy2o6B",
-    postUrl: `${process.env.NEXT_PUBLIC_HOST}/api/frames/approve`,
-    state: {
-      id: params.id,
-      bannerImage: params.bannerImage,
-    } as DonationFrameState,
+    postUrl: `${process.env.NEXT_PUBLIC_HOST}/api/frames/approve?id=${params.id}&bannerImage=${params.bannerImage}`,
   });
 };
