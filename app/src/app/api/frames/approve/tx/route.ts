@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   });
 
   const txData: FrameTransactionResponse = {
-    chainId: `eip155:${APP_CHAIN}`,
+    chainId: `eip155:${APP_CHAIN.id}`,
     method: "eth_sendTransaction",
     params: {
       abi: [],
