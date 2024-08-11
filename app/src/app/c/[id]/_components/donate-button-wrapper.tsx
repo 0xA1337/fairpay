@@ -113,6 +113,11 @@ export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrap
           chainId={APP_CHAIN.id}
           onError={handleError}
           onSuccess={handleSuccess}
+          capabilities={{
+            paymasterService: {
+              url: process.env.NEXT_PUBLIC_PAYMASTER_ENDPOINT || "",
+            },
+          }}
         >
           <TransactionButton
             className="h-12 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"

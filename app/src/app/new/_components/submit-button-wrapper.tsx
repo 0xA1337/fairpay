@@ -85,6 +85,11 @@ export function SubmitButtonWrapper({
           chainId={APP_CHAIN.id}
           onError={handleError}
           onSuccess={handleSuccess}
+          capabilities={{
+            paymasterService: {
+              url: process.env.NEXT_PUBLIC_PAYMASTER_ENDPOINT || "",
+            },
+          }}
         >
           <FormLabel className="invisible hidden md:block">Submit</FormLabel>
 
