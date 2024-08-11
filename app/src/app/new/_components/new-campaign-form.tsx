@@ -1,8 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useImageUpload } from "@/app/new/_hooks/use-image-upload";
 import { Button } from "@/shared/components/ui/button";
 import { Calendar } from "@/shared/components/ui/calendar";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/shared/components/ui/command";
 import {
   Form,
   FormControl,
@@ -19,16 +28,20 @@ import { ALLOWED_IMAGE_TYPES } from "@/shared/constants";
 import { cn } from "@/shared/utils/tailwind";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address } from "viem";
 import { z } from "zod";
+import { useUserByUsername } from "../_hooks/use-username-search";
 import { SubmitButtonWrapper } from "./submit-button-wrapper";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters long." }),
   description: z.string().min(3, { message: "Description must be at least 3 characters long." }),
-  recipient: z.string(), // TODO: Add validation
+  recipient: z.string({
+    required_error: "A recipient is required.",
+  }),
   goal: z
     .number()
     .min(10, { message: "The target amount cannot be below 10 USD." })
@@ -40,6 +53,7 @@ const formSchema = z.object({
 
 export function NewCampaignForm() {
   // const { address } = useAccount();
+  const [typedUsername, setTypedUsername] = useState("");
 
   const {
     mutate: uploadImageToIpfs,
@@ -61,23 +75,18 @@ export function NewCampaignForm() {
     mode: "onBlur",
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
-    if (form.watch("image") && !imageUploadIsSuccess) {
-      form.setError("image", {
-        type: "manual",
-        message: "Image is not confirmed.",
-      });
-      return;
-    }
-  };
-
-  const imageField = form.watch("image");
+  const onSubmit = (values: z.infer<typeof formSchema>) => console.log(values);
 
   const formValues = form.getValues();
 
-  console.log(">", formValues.goal);
+  const { data: searchResults, isLoading: isSearching } = useUserByUsername(typedUsername);
+
+  const matchingUsers = searchResults || [];
+
+  console.log(
+    "Usernames found : ",
+    matchingUsers.map((user) => user.username)
+  );
 
   return (
     <Form {...form}>
@@ -231,9 +240,60 @@ export function NewCampaignForm() {
           render={({ field }) => (
             <FormItem className="col-span-1 flex flex-col">
               <FormLabel>Recipient</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="0x..." autoComplete="off" />
-              </FormControl>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? field.value : "Select a recipient"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[280px] p-0">
+                  <Command shouldFilter={false}>
+                    <CommandInput
+                      placeholder="Search for a recipient..."
+                      value={typedUsername}
+                      onValueChange={setTypedUsername}
+                    />
+                    <CommandList>
+                      <CommandEmpty>{isSearching ? "Searching..." : "No user found."}</CommandEmpty>
+                      <CommandGroup>
+                        {matchingUsers.map((user) => {
+                          const address =
+                            user.verified_addresses.eth_addresses[0] ?? user.custody_address;
+
+                          return (
+                            <CommandItem
+                              value={address}
+                              key={address}
+                              onSelect={() => {
+                                form.setValue("recipient", address);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  address === field.value ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              <img src={user.pfp_url} alt="" className="h-8 w-8 m-1 rounded-full" />
+                              <span className="leading-none">@{user.username}</span>
+                            </CommandItem>
+                          );
+                        })}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormDescription>The account that will receive the funds.</FormDescription>
               <FormMessage />
             </FormItem>

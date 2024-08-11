@@ -45,8 +45,6 @@ export function SubmitButtonWrapper({
   const finalGoal = goal ? BigInt(goal) : BigInt(0);
   const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : BigInt(0);
 
-  console.log("image", finalBannerImage);
-
   const contracts = [
     {
       address: fairpayAddress,
