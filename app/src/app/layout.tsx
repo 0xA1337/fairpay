@@ -38,10 +38,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(inter.variable, "min-h-screen h-full")}
+      className={cn(inter.variable, "min-h-[100dvh] h-full")}
       style={{ scrollbarGutter: "stable" }}
     >
-      <body className={"w-full h-full flex flex-col"}>
+      <body className={"w-full h-full flex flex-col antialiased"}>
         <OnchainProviderNoSSR>
           <Header />
           {children}
