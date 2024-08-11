@@ -31,7 +31,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Address } from "viem";
+import { Address, getAddress } from "viem";
 import { z } from "zod";
 import { useUserByUsername } from "../_hooks/use-username-search";
 import { SubmitButtonWrapper } from "./submit-button-wrapper";
@@ -306,7 +306,7 @@ export function NewCampaignForm() {
           title={formValues.title}
           description={formValues.description}
           bannerImage={imageUploadResult?.hash}
-          recipient={formValues.recipient as Address}
+          recipient={getAddress(formValues.recipient as Address)}
           goal={formValues.goal}
           endDate={formValues.endDate}
           formValid={form.formState.isValid}
