@@ -1,7 +1,7 @@
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import Link from "next/link";
 
-export function ExploreCampaignsGrid() {
+export function SkeletonCampaignsGrid() {
   const campaigns = Array.from({ length: 5 }, (_, i) => i);
 
   return (

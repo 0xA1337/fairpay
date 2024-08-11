@@ -12,6 +12,7 @@
     "wagmi:generate": "wagmi generate --config src/core/config/wagmi-cli.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.4",
     "@coinbase/onchainkit": "^0.28.7",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-dialog": "^1.1.1",

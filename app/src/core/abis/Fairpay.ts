@@ -60,6 +60,12 @@ export const fairpayAbi = [
       },
       {
         indexed: false,
+        internalType: "string",
+        name: "bannerImage",
+        type: "string",
+      },
+      {
+        indexed: false,
         internalType: "uint256",
         name: "goal",
         type: "uint256",
