@@ -7,7 +7,7 @@ import {
   getFrameMessage,
 } from "@coinbase/onchainkit/frame";
 import { NextResponse, type NextRequest } from "next/server";
-import { encodeFunctionData, parseUnits } from "viem";
+import { encodeFunctionData, parseEther, parseUnits } from "viem";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       abi: [],
       data,
       to: fairpayAddress,
-      value: "0x0",
+      value: parseEther("0.00000").toString(),
     },
   };
 
