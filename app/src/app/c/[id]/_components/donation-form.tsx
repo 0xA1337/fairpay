@@ -13,7 +13,7 @@ export function DonationForm(props: { id: number }) {
   const [amountSetViaInput, setAmountSetViaInput] = useState(true);
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="p-6 space-y-6">
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
         {suggestedDonations.map((amount) => (
           <Button
@@ -36,7 +36,7 @@ export function DonationForm(props: { id: number }) {
       </div>
       <div className="flex gap-2">
         <div className="w-1/2">
-          <p>Or type your own amount:</p>
+          <p className="mb-2">Or type your own amount:</p>
           <div className="flex items-center justify-center">
             <Input
               placeholder="Amount"
@@ -60,8 +60,7 @@ export function DonationForm(props: { id: number }) {
             <div className="ml-2 mr-4">USD</div>
           </div>
         </div>
-        <div className="w-1/2">
-          <p className="invisible">X</p>
+        <div className="w-1/2 self-end">
           <DonateButtonWrapper campaignId={props.id} amountUsdc={amountToDonate || 0} />
         </div>
       </div>

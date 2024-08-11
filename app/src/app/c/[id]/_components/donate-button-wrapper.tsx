@@ -2,8 +2,17 @@
 
 import { fairpayAbi } from "@/core/abis/Fairpay";
 import { LoginButton } from "@/shared/components/login-button";
+import { Button } from "@/shared/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
 import { APP_CHAIN } from "@/shared/constants";
 import { fairpayAddress, usdcAbi, usdcAddress } from "@/shared/generated";
+import { makeTransactionUrl } from "@/shared/utils/explorer";
 import {
   Transaction,
   TransactionButton,
@@ -14,7 +23,10 @@ import {
   TransactionToastIcon,
   TransactionToastLabel,
 } from "@coinbase/onchainkit/transaction";
-import { useRouter } from "next/navigation";
+import { CompassIcon, HouseIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import { ContractFunctionParameters, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
@@ -25,8 +37,9 @@ interface SubmitButtonWrapperProps {
 
 export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrapperProps) {
   const { address } = useAccount();
-  const router = useRouter();
   const finalAmount = parseUnits(amountUsdc.toString(), 6);
+  const [isDonationComplete, setIsDonationComplete] = useState(false);
+  const [txHash, setTxHash] = useState<string | null>(null);
 
   const contracts = [
     {
@@ -49,13 +62,47 @@ export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrap
 
   const handleSuccess = (response: TransactionResponse) => {
     console.log("Transaction success:", response);
+    setIsDonationComplete(true);
+    const [tx] = response.transactionReceipts;
+    setTxHash(tx.transactionHash);
   };
 
   return (
     <>
+      <Dialog open={isDonationComplete}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Donation Complete!</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 justify-center items-center py-6">
+            <Image src="/assets/checkmark-icon.svg" width={100} height={100} alt="" />
+            {txHash && (
+              <Button variant={"link"}>
+                <Link href={makeTransactionUrl(txHash)} target="_blank">
+                  View transaction
+                </Link>
+              </Button>
+            )}
+          </div>
+          <DialogFooter>
+            <Button size={"sm"} variant={"outline"} className="w-1/2" asChild>
+              <Link href="/explore">
+                <CompassIcon className="w-4 h-4 mr-2" />
+                Explore
+              </Link>
+            </Button>
+            <Button size={"sm"} asChild className="w-1/2">
+              <Link href="/">
+                <HouseIcon className="w-4 h-4 mr-2" />
+                Home
+              </Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {!address && (
         <>
-          <LoginButton text="Log in to donate" />
+          <LoginButton className="!h-12" text="Log in to donate" />
         </>
       )}
       {address && (
