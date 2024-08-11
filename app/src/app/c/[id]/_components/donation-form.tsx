@@ -34,12 +34,12 @@ export function DonationForm(props: { id: number }) {
           </Button>
         ))}
       </div>
-      <div className="flex gap-2">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-2">
+        <div className="w-full md:w-1/2">
           <p className="mb-2">Or type your own amount:</p>
           <div className="flex items-center justify-center">
             <Input
-              placeholder="Amount"
+              placeholder="Amount in USD"
               className="flex-grow text-lg h-12 px-4"
               inputMode="numeric"
               autoComplete="off"
@@ -57,10 +57,9 @@ export function DonationForm(props: { id: number }) {
                 }
               }}
             />
-            <div className="ml-2 mr-4">USD</div>
           </div>
         </div>
-        <div className="w-1/2 self-end">
+        <div className="w-full md:w-1/2 self-end">
           <DonateButtonWrapper campaignId={props.id} amountUsdc={amountToDonate || 0} />
         </div>
       </div>

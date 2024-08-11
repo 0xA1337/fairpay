@@ -20,7 +20,7 @@ export function DonationItem(props: { donor: string; amount: bigint; timestamp: 
         </Identity>
       </div>
       <p className="text-center">{formatUnits(props.amount, 6)}$</p>
-      <p>{formatRelativeDate(Number(props.timestamp))}</p>
+      <p className="hidden md:block">{formatRelativeDate(Number(props.timestamp))}</p>
     </div>
   );
 }

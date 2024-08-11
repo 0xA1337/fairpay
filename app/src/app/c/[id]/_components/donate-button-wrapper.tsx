@@ -85,13 +85,13 @@ export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrap
             )}
           </div>
           <DialogFooter>
-            <Button size={"sm"} variant={"outline"} className="w-1/2" asChild>
+            <Button size={"sm"} variant={"outline"} className="w-full md:w-1/2" asChild>
               <Link href="/explore">
                 <CompassIcon className="w-4 h-4 mr-2" />
                 Explore
               </Link>
             </Button>
-            <Button size={"sm"} asChild className="w-1/2">
+            <Button size={"sm"} asChild className="w-full md:w-1/2 mb-2 md:mb-0">
               <Link href="/">
                 <HouseIcon className="w-4 h-4 mr-2" />
                 Home

@@ -73,7 +73,7 @@ export function SubmitButtonWrapper({
     <div className="flex flex-col gap-y-2">
       {!address && (
         <>
-          <FormLabel className="invisible">Submit</FormLabel>
+          <FormLabel className="invisible hidden md:block">Submit</FormLabel>
           <LoginButton text="Log in to create" />
         </>
       )}
@@ -86,7 +86,7 @@ export function SubmitButtonWrapper({
           onError={handleError}
           onSuccess={handleSuccess}
         >
-          <FormLabel className="invisible">Submit</FormLabel>
+          <FormLabel className="invisible hidden md:block">Submit</FormLabel>
 
           <TransactionButton
             className="h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"

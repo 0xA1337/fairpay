@@ -27,7 +27,7 @@ export default function WalletWrapper({
           withWalletAggregator={withWalletAggregator}
           text={text}
           className={cn(
-            "h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium",
+            "h-10 px-3 !min-w-0 md:px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium",
             className
           )}
         >

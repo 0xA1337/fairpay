@@ -93,13 +93,13 @@ export async function CampaignPanel(props: { id: number }) {
               !campaign.goal || !campaign.endDate ? "grid-cols-1" : ""
             )}
           >
-            <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
+            <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg text-center">
               <span>${prettyAmount}</span>
               {campaign.goal && <span className="mx-0.5">/</span>}
               {campaign.goal && <span>{prettyGoal}</span>}
             </div>
             {campaign.endDate && (
-              <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
+              <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg text-center">
                 {prettyEndDate}
               </div>
             )}
@@ -109,12 +109,12 @@ export async function CampaignPanel(props: { id: number }) {
           <h1 className="text-3xl font-bold">{campaign.title}</h1>
           <RecipientSection recipient={campaign.recipient} />
           <p>{campaign.description}</p>
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4 gap-2">
             <Button asChild>
               <Link href={`/c/${props.id}?mode=donate`}>Donate</Link>
             </Button>
 
-            <div className="space-x-2">
+            <div className="flex flex-col md:flex-row gap-2">
               <Button variant={"x"} asChild>
                 <Link href={XUrl} target="_blank">
                   Share on X

@@ -45,7 +45,7 @@ async function fetchLatestCampaigns() {
 export async function CampaignsGrid() {
   const campaigns = await fetchLatestCampaigns();
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-2 gap-3 md:gap-6">
       {campaigns.map((campaign) => (
         <Link href={`/c/${campaign.idParam}`} key={campaign.idParam}>
           <div className="w-full h-[300px] shadow-md rounded-md overflow-hidden">

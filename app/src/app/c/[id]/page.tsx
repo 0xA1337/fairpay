@@ -68,7 +68,7 @@ export default function CampaignPage({
   const isDonateMode = searchParams.mode === "donate";
 
   return (
-    <main className="mx-auto w-full max-w-4xl py-8">
+    <main className="mx-auto w-full max-w-4xl p-4 md:py-8">
       {isDonateMode ? (
         <Suspense fallback={<SkeletonDonatePanel />}>
           <DonatePanel id={+id} />

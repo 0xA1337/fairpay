@@ -90,7 +90,10 @@ export function NewCampaignForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 w-full gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 w-full gap-4"
+      >
         <FormField
           control={form.control}
           name="title"
@@ -109,7 +112,7 @@ export function NewCampaignForm() {
           control={form.control}
           name="image"
           render={({ field: { value, onChange, ...fieldProps } }) => (
-            <FormItem className="col-span-1 row-span-2 flex flex-col h-full">
+            <FormItem className=" row-span-2 flex flex-col h-full">
               <FormLabel>{"Image (optional)"}</FormLabel>
               <FormControl>
                 <div className="flex flex-col flex-grow gap-x-2">
@@ -163,7 +166,7 @@ export function NewCampaignForm() {
           control={form.control}
           name="goal"
           render={({ field: { onChange, ...fieldProps } }) => (
-            <FormItem className="flex flex-col col-span-1 mt-5">
+            <FormItem className="flex flex-col  mt-5">
               <FormLabel>{"Goal (optional)"}</FormLabel>
               <FormControl>
                 <div className="flex gap-x-2 items-center">
@@ -199,7 +202,7 @@ export function NewCampaignForm() {
           control={form.control}
           name="endDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col col-span-1 mt-5">
+            <FormItem className="flex flex-col  mt-5">
               <FormLabel>{"End date (optional)"}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -238,7 +241,7 @@ export function NewCampaignForm() {
           control={form.control}
           name="recipient"
           render={({ field }) => (
-            <FormItem className="col-span-1 flex flex-col">
+            <FormItem className=" flex flex-col">
               <FormLabel>Recipient</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
