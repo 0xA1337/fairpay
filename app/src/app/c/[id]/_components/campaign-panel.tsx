@@ -13,6 +13,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatUnits } from "viem";
 import { DonationItem } from "./donation-item";
+import { RecipientSection } from "./recipient-section";
 
 async function fetchCampaign(id: number) {
   try {
@@ -94,7 +95,8 @@ export async function CampaignPanel(props: { id: number }) {
           >
             <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
               <span>${prettyAmount}</span>
-              {campaign.goal && <span>{` / $${prettyGoal}`}</span>}
+              {campaign.goal && <span className="mx-0.5">/</span>}
+              {campaign.goal && <span>{prettyGoal}</span>}
             </div>
             {campaign.endDate && (
               <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
@@ -105,6 +107,7 @@ export async function CampaignPanel(props: { id: number }) {
         </div>
         <div className="p-6">
           <h1 className="text-3xl font-bold">{campaign.title}</h1>
+          <RecipientSection recipient={campaign.recipient} />
           <p>{campaign.description}</p>
           <div className="flex justify-between items-center mt-4">
             <Button asChild>
