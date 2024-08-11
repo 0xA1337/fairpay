@@ -1,4 +1,5 @@
 import { getFrameMetadata } from "@coinbase/onchainkit/frame";
+import { buildIpfsUrl } from "../utils/ipfs";
 import { buildWarpcastIntentUrl } from "../utils/social";
 
 export const getCampaignFrame = (params: { id: number; bannerImage: string }) => {
@@ -22,8 +23,7 @@ export const getCampaignFrame = (params: { id: number; bannerImage: string }) =>
         action: "post",
       },
     ],
-    image:
-      "https://aqua-wooden-kite-259.mypinata.cloud/ipfs/QmahtmC5tLALkxbwDCfvXCgyFvJd9UyZdDEgtRkDwy2o6B",
+    image: buildIpfsUrl(params.bannerImage),
     postUrl: `${process.env.NEXT_PUBLIC_HOST}/api/frames/approve?id=${params.id}&bannerImage=${params.bannerImage}`,
   });
 };
