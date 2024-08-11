@@ -15,7 +15,9 @@ export async function POST(request: NextRequest) {
     return new Response("Invalid request", { status: 400 });
   }
 
-  const { id, bannerImage }: DonationFrameState = JSON.parse(message.state.serialized);
+  const { id, bannerImage }: DonationFrameState = JSON.parse(
+    decodeURIComponent(message.state.serialized)
+  );
 
   const campaignUrl = `${process.env.NEXT_PUBLIC_HOST}/c/${id}`;
   const farcasterUrl = buildWarpcastIntentUrl("Check out this campaign on Fairpay!", [campaignUrl]);

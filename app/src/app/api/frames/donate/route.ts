@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   }
 
   console.log("vvvvvvvvv", message);
-  const state: DonationFrameState = JSON.parse(message.state.serialized);
+  const state: DonationFrameState = JSON.parse(decodeURIComponent(message.state.serialized));
 
   // check if message.number isn't a positive integer
   if (!Number.isInteger(+message.input) || +message.input <= 0) {

@@ -23,7 +23,9 @@ export async function POST(request: NextRequest) {
 
   console.log("Message: ", message);
 
-  const { id, amount }: DonationFrameState = JSON.parse(message.state.serialized);
+  const { id, amount }: DonationFrameState = JSON.parse(
+    decodeURIComponent(message.state.serialized)
+  );
 
   const data = encodeFunctionData({
     abi: fairpayAbi,
