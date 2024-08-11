@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
     return new Response("Invalid request", { status: 400 });
   }
 
+  console.log("Message: ", message);
+
   const { id, amount }: DonationFrameState = JSON.parse(message.state.serialized);
 
   const data = encodeFunctionData({

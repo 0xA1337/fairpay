@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
   const id = Number(searchParams.get("id"));
   const bannerImage = searchParams.get("bannerImage");
 
+  console.log("Params: ", id, bannerImage);
+
   const { isValid, message } = await getFrameMessage(frameRequest, {
     allowFramegear: process.env.NEXT_PUBLIC_ENVIRONMENT !== "production",
   });
