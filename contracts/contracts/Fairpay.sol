@@ -27,6 +27,7 @@ contract Fairpay is Ownable {
         uint256 indexed id,
         string title,
         address indexed recipient,
+        string bannerImage,
         uint256 goal,
         uint256 endDate
     );
@@ -73,7 +74,7 @@ contract Fairpay is Ownable {
             totalRaised: 0
         });
 
-        emit CampaignCreated(currentCampaignId, _title, _recipient, _goal, _endDate);
+        emit CampaignCreated(currentCampaignId, _title, _recipient, _bannerImage, _goal, _endDate);
 
         return currentCampaignId;
     }
