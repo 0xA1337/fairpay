@@ -5,6 +5,7 @@ import donationsClient, { ResponseType } from "@/shared/gql-clients/donations-cl
 import { getEndsInString } from "@/shared/utils/dates";
 import { buildIpfsUrl } from "@/shared/utils/ipfs";
 import { buildWarpcastIntentUrl, buildXIntentUrl } from "@/shared/utils/social";
+import { cn } from "@/shared/utils/tailwind";
 import { gql } from "@apollo/client";
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -56,9 +57,10 @@ async function fetchLatestDonations(campaignId: number) {
   }
 }
 
+export const dynamic = "force-dynamic";
+
 export async function CampaignPanel(props: { id: number }) {
   const campaign = await fetchCampaign(props.id);
-  console.log(" wxxxxxx", campaign);
   const latestDonations = await fetchLatestDonations(props.id);
 
   const imageUrl = buildIpfsUrl(campaign.bannerImage);
@@ -84,13 +86,21 @@ export async function CampaignPanel(props: { id: number }) {
             objectFit="cover"
             className="backdrop-brightness-100 brightness-95"
           />
-          <div className="absolute grid grid-cols-2 left-4 right-4 bottom-4 gap-2">
+          <div
+            className={cn(
+              "absolute grid grid-cols-2 left-4 right-4 bottom-4 gap-2",
+              !campaign.goal || !campaign.endDate ? "grid-cols-1" : ""
+            )}
+          >
             <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
-              ${prettyAmount} / ${prettyGoal}
+              <span>${prettyAmount}</span>
+              {campaign.goal && <span>{` / $${prettyGoal}`}</span>}
             </div>
-            <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
-              {prettyEndDate}
-            </div>
+            {campaign.endDate && (
+              <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
+                {prettyEndDate}
+              </div>
+            )}
           </div>
         </div>
         <div className="p-6">

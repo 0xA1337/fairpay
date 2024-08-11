@@ -4,6 +4,8 @@ import { buildIpfsUrl } from "@/shared/utils/ipfs";
 import { notFound } from "next/navigation";
 import { DonationForm } from "./donation-form";
 
+export const dynamic = "force-dynamic";
+
 async function fetchCampaign(id: number) {
   try {
     return await readFairpayGetCampaign(serverWagmiConfig, {
