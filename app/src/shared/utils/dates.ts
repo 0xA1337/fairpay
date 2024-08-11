@@ -16,3 +16,13 @@ export function formatRelativeDate(unixTimestamp: number): string {
     return format(date, "MMMM d, yyyy");
   }
 }
+
+/**
+ * Formats a date as a string that says "Ends in X".
+ *
+ * @param date The date to format.
+ * @returns The formatted string.
+ */
+export function getEndsInString(date: Date): string {
+  return `Ends in ${formatDistanceToNow(date, { addSuffix: false })}`;
+}

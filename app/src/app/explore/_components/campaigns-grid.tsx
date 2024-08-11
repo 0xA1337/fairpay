@@ -44,9 +44,6 @@ async function fetchLatestCampaigns() {
 
 export async function CampaignsGrid() {
   const campaigns = await fetchLatestCampaigns();
-  campaigns.forEach((campaign) => {
-    console.log("campaign", campaign);
-  });
   return (
     <div className="grid grid-cols-2 gap-6">
       {campaigns.map((campaign) => (

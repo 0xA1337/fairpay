@@ -2,6 +2,7 @@ import { serverWagmiConfig } from "@/core/config/wagmi-server";
 import { Button } from "@/shared/components/ui/button";
 import { readFairpayGetCampaign } from "@/shared/generated";
 import donationsClient, { ResponseType } from "@/shared/gql-clients/donations-client";
+import { getEndsInString } from "@/shared/utils/dates";
 import { buildIpfsUrl } from "@/shared/utils/ipfs";
 import { buildWarpcastIntentUrl, buildXIntentUrl } from "@/shared/utils/social";
 import { gql } from "@apollo/client";
@@ -9,6 +10,7 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { formatUnits } from "viem";
 import { DonationItem } from "./donation-item";
 
 async function fetchCampaign(id: number) {
@@ -56,6 +58,7 @@ async function fetchLatestDonations(campaignId: number) {
 
 export async function CampaignPanel(props: { id: number }) {
   const campaign = await fetchCampaign(props.id);
+  console.log(" wxxxxxx", campaign);
   const latestDonations = await fetchLatestDonations(props.id);
 
   const imageUrl = buildIpfsUrl(campaign.bannerImage);
@@ -65,6 +68,10 @@ export async function CampaignPanel(props: { id: number }) {
   const campaignUrl = `https://${hostname}/c/${props.id}`;
   const farcasterUrl = buildWarpcastIntentUrl("Check out this campaign on Fairpay!", [campaignUrl]);
   const XUrl = buildXIntentUrl("Check out this campaign on Fairpay!", campaignUrl);
+
+  const prettyAmount = formatUnits(campaign.totalRaised, 6);
+  const prettyGoal = Number(campaign.goal);
+  const prettyEndDate = getEndsInString(new Date(Number(campaign.endDate) * 1000));
 
   return (
     <section className="space-y-5">
@@ -77,8 +84,13 @@ export async function CampaignPanel(props: { id: number }) {
             objectFit="cover"
             className="backdrop-brightness-100 brightness-95"
           />
-          <div className="absolute left-4 right-4 bottom-4 h-10 bg-white/80 backdrop-blur-md rounded-md ">
-            {campaign.goal} -- {campaign.totalRaised}
+          <div className="absolute grid grid-cols-2 left-4 right-4 bottom-4 gap-2">
+            <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
+              ${prettyAmount} / ${prettyGoal}
+            </div>
+            <div className="flex justify-center items-center bg-white/70 backdrop-blur-md rounded-md p-2 font-semibold text-lg">
+              {prettyEndDate}
+            </div>
           </div>
         </div>
         <div className="p-6">
