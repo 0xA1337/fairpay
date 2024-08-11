@@ -83,7 +83,11 @@ export function NewCampaignForm() {
 
   const matchingUsers = searchResults || [];
 
-  console.log("Recipient", formValues.recipient);
+  const title = form.watch("title");
+  const description = form.watch("description");
+  const recipient = form.watch("recipient");
+  const goal = form.watch("goal");
+  const endDate = form.watch("endDate");
 
   return (
     <Form {...form}>
@@ -275,13 +279,16 @@ export function NewCampaignForm() {
                               value={address}
                               key={address}
                               onSelect={() => {
+                                console.log("Selected", address);
                                 form.setValue("recipient", getAddress(address));
                               }}
                             >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  address === field.value ? "opacity-100" : "opacity-0"
+                                  address.toLowerCase() === field.value.toLowerCase()
+                                    ? "opacity-100"
+                                    : "opacity-0"
                                 )}
                               />
                               <img src={user.pfp_url} alt="" className="h-8 w-8 m-1 rounded-full" />
@@ -300,12 +307,12 @@ export function NewCampaignForm() {
           )}
         />
         <SubmitButtonWrapper
-          title={formValues.title}
-          description={formValues.description}
+          title={title}
+          description={description}
           bannerImage={imageUploadResult?.hash}
           recipient={formValues.recipient as Address}
-          goal={formValues.goal}
-          endDate={formValues.endDate}
+          goal={goal}
+          endDate={endDate}
           formValid={form.formState.isValid}
         />
       </form>
