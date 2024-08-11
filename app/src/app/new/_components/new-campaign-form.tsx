@@ -83,10 +83,7 @@ export function NewCampaignForm() {
 
   const matchingUsers = searchResults || [];
 
-  console.log(
-    "Usernames found : ",
-    matchingUsers.map((user) => user.username)
-  );
+  console.log("Recipient", formValues.recipient);
 
   return (
     <Form {...form}>
@@ -278,7 +275,7 @@ export function NewCampaignForm() {
                               value={address}
                               key={address}
                               onSelect={() => {
-                                form.setValue("recipient", address);
+                                form.setValue("recipient", getAddress(address));
                               }}
                             >
                               <Check
@@ -306,7 +303,7 @@ export function NewCampaignForm() {
           title={formValues.title}
           description={formValues.description}
           bannerImage={imageUploadResult?.hash}
-          recipient={getAddress(formValues.recipient as Address)}
+          recipient={formValues.recipient as Address}
           goal={formValues.goal}
           endDate={formValues.endDate}
           formValid={form.formState.isValid}
