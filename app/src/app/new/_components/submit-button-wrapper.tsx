@@ -39,15 +39,16 @@ export function SubmitButtonWrapper({
   const { address } = useAccount();
   const router = useRouter();
 
-  const finalGoal = goal ? BigInt(goal) : undefined;
-  const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : undefined;
+  const finalBannerImage = bannerImage || "";
+  const finalGoal = goal ? BigInt(goal) : BigInt(0);
+  const finalEndDate = endDate ? BigInt(Math.floor(endDate.getTime() / 1000)) : BigInt(0);
 
   const contracts = [
     {
       address: fairpayAddress,
       abi: fairpayAbi,
       functionName: "createCampaign",
-      args: [title, description, bannerImage, recipient, finalGoal, finalEndDate],
+      args: [title, description, finalBannerImage, recipient, finalGoal, finalEndDate],
     },
   ] as unknown as ContractFunctionParameters[];
 
