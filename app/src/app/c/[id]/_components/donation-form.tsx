@@ -39,9 +39,11 @@ export function DonationForm(props: { id: number }) {
           <p>Or type your own amount:</p>
           <div className="flex items-center justify-center">
             <Input
-              type="number"
-              className="flex-grow text-lg h-12 px-4"
               placeholder="Amount"
+              className="flex-grow text-lg h-12 px-4"
+              inputMode="numeric"
+              autoComplete="off"
+              type="number"
               min={1}
               max={5_000_000}
               step={1}
@@ -50,8 +52,8 @@ export function DonationForm(props: { id: number }) {
                 setAmountSetViaInput(true);
                 if (e.target.value === "") {
                   setAmountToDonate(null);
-                } else {
-                  setAmountToDonate(+e.target.value);
+                } else if (/^\d*$/g.test(e.target.value)) {
+                  setAmountToDonate(parseInt(e.target.value));
                 }
               }}
             />

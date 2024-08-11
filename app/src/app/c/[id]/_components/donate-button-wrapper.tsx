@@ -68,8 +68,9 @@ export function DonateButtonWrapper({ campaignId, amountUsdc }: SubmitButtonWrap
           onSuccess={handleSuccess}
         >
           <TransactionButton
-            className="h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"
+            className="h-12 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"
             text="Donate"
+            disabled={amountUsdc <= 0 || amountUsdc > 5_000_000}
           />
           <TransactionToast>
             <TransactionToastIcon />

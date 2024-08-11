@@ -26,6 +26,7 @@ interface SubmitButtonWrapperProps {
   recipient: Address;
   goal?: number;
   endDate?: Date;
+  formValid: boolean;
 }
 
 export function SubmitButtonWrapper({
@@ -35,6 +36,7 @@ export function SubmitButtonWrapper({
   recipient,
   goal,
   endDate,
+  formValid,
 }: SubmitButtonWrapperProps) {
   const { address } = useAccount();
   const router = useRouter();
@@ -89,6 +91,7 @@ export function SubmitButtonWrapper({
           <TransactionButton
             className="h-10 px-4 py-2 rounded-md [&>span]:text-sm [&>span]:font-medium w-full mt-0 bg-primary [&>span]:text-primary-foreground hover:bg-primary/90"
             text="Create"
+            disabled={!formValid}
           />
           <TransactionToast>
             <TransactionToastIcon />

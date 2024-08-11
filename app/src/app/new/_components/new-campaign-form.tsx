@@ -58,6 +58,7 @@ export function NewCampaignForm() {
       goal: undefined,
       recipient: "",
     },
+    mode: "onBlur",
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -170,15 +171,17 @@ export function NewCampaignForm() {
                       if (value === "") {
                         onChange(undefined);
                       } else if (/^\d*$/g.test(value)) {
-                        console.log(value);
-                        onChange(value);
+                        onChange(parseInt(value));
                       }
                     }}
                   />
                   <span className="select-none">USD</span>
                 </div>
               </FormControl>
-              <FormDescription>The target amount (in USD) you want to raise.</FormDescription>
+              <FormDescription>
+                The target amount (in USD) you want to raise. The campaign will continue to accept
+                donations even after reaching this goal.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -214,7 +217,10 @@ export function NewCampaignForm() {
                   />
                 </PopoverContent>
               </Popover>
-              <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
+              <FormDescription>
+                The date when the campaign will end. After this date, the campaign will no longer be
+                accepting donations.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -228,7 +234,7 @@ export function NewCampaignForm() {
               <FormControl>
                 <Input {...field} placeholder="0x..." autoComplete="off" />
               </FormControl>
-              <FormDescription>A short, descriptive title for your campaign.</FormDescription>
+              <FormDescription>The account that will receive the funds.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -240,6 +246,7 @@ export function NewCampaignForm() {
           recipient={formValues.recipient as Address}
           goal={formValues.goal}
           endDate={formValues.endDate}
+          formValid={form.formState.isValid}
         />
       </form>
     </Form>
