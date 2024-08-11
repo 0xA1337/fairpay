@@ -49,6 +49,26 @@ export default function AboutPage() {
             platform is always available, no matter what.
           </p>
         </div>
+        <div className="p-2 md:p-4 border-t border-border/80">
+          <h2 className="text-2xl font-semibold">Does Fairpay take a cut?</h2>
+          <p>
+            Fairpay takes a small cut of the amount raise to be able to keep covering the fees of
+            our user&apos;s transactions. The fees are as follows:
+            <ul className="list-disc list-inside">
+              <li>
+                When less than $100 has been raised, <span className="font-medium">0%</span> cut.
+              </li>
+              <li>
+                When between $100 and $10,000 has been raised,{" "}
+                <span className="font-medium">5%</span> cut.
+              </li>
+              <li>
+                When more than $10,000 has been raised, <span className="font-medium">1.5%</span>{" "}
+                cut.
+              </li>
+            </ul>
+          </p>
+        </div>
       </section>
     </main>
   );
