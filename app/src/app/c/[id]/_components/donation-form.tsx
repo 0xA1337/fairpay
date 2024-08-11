@@ -30,7 +30,7 @@ export function DonationForm(props: { id: number }) {
               setAmountToDonate(amount);
             }}
           >
-            {amount}$
+            ${amount}
           </Button>
         ))}
       </div>
